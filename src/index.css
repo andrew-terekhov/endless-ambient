@@ -1,0 +1,216 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Ambient Color Palette */
+    --background: 232 23% 8%;
+    --foreground: 215 20% 98%;
+
+    --card: 232 25% 12%;
+    --card-foreground: 215 15% 95%;
+
+    --popover: 232 30% 10%;
+    --popover-foreground: 215 20% 98%;
+
+    --primary: 260 80% 65%;
+    --primary-foreground: 215 20% 98%;
+
+    --secondary: 195 75% 60%;
+    --secondary-foreground: 232 25% 12%;
+
+    --muted: 232 18% 20%;
+    --muted-foreground: 215 10% 70%;
+
+    --accent: 280 85% 70%;
+    --accent-foreground: 232 25% 12%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 215 20% 98%;
+
+    --border: 232 15% 25%;
+    --input: 232 20% 15%;
+    --ring: 260 80% 65%;
+
+    /* Ambient Design Tokens */
+    --ambient-glow: 260 80% 65%;
+    --ambient-secondary: 195 75% 60%;
+    --ambient-tertiary: 280 85% 70%;
+    --ambient-surface: 232 25% 12%;
+    --ambient-surface-elevated: 232 30% 16%;
+    
+    /* Gradients */
+    --gradient-ambient: linear-gradient(135deg, hsl(260 80% 65% / 0.2), hsl(195 75% 60% / 0.1));
+    --gradient-glow: radial-gradient(circle at center, hsl(260 80% 65% / 0.3), transparent 70%);
+    --gradient-surface: linear-gradient(135deg, hsl(232 30% 16% / 0.8), hsl(232 25% 12% / 0.9));
+    
+    /* Shadows & Effects */
+    --shadow-ambient: 0 0 40px hsl(260 80% 65% / 0.3);
+    --shadow-glow: 0 0 20px hsl(195 75% 60% / 0.4);
+    --shadow-card: 0 8px 32px hsl(232 23% 8% / 0.4);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --radius: 1rem;
+
+    --sidebar-background: 232 25% 12%;
+    --sidebar-foreground: 215 15% 85%;
+    --sidebar-primary: 260 80% 65%;
+    --sidebar-primary-foreground: 215 20% 98%;
+    --sidebar-accent: 232 30% 16%;
+    --sidebar-accent-foreground: 215 15% 85%;
+    --sidebar-border: 232 15% 25%;
+    --sidebar-ring: 260 80% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(232 20% 12%));
+    overflow-x: hidden;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+    min-height: 100vh;
+    min-height: 100dvh;
+    /* Support for iOS safe areas */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(232 20% 12%));
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for mobile */
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+  }
+
+  #root {
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(232 20% 12%));
+    min-height: 100vh;
+    min-height: 100dvh;
+    position: relative;
+  }
+
+  /* Enhanced iOS overscroll fix - larger coverage areas */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200vh;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 200vh;
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(232 20% 12%));
+    z-index: -1000;
+    pointer-events: none;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -200vh;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 200vh;
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(232 20% 12%));
+    z-index: -1000;
+    pointer-events: none;
+  }
+
+  /* Additional iOS Safari specific fixes */
+  @supports (-webkit-touch-callout: none) {
+    html, body {
+      overscroll-behavior-y: none;
+      -webkit-overflow-scrolling: touch;
+      -webkit-transform: translate3d(0,0,0);
+    }
+    
+    body {
+      position: relative;
+      overflow-x: hidden;
+    }
+  }
+}
+
+@layer components {
+  .ambient-glass {
+    @apply backdrop-blur-xl border border-white/10 bg-gradient-to-br from-white/5 to-white/5;
+    box-shadow: var(--shadow-card), inset 0 1px 0 hsl(255 255% 255% / 0.1);
+  }
+
+  .ambient-glow {
+    position: relative;
+  }
+
+  .ambient-glow::before {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    background: var(--gradient-glow);
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+  }
+
+  .floating-element {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(1deg); }
+    66% { transform: translateY(-5px) rotate(-0.5deg); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.4; }
+  }
+
+  .ambient-pulse {
+    position: relative;
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(260 80% 65% / 0.2),
+      transparent
+    );
+    transform: translateX(-100%);
+    animation: shimmer 2s infinite;
+  }
+}
